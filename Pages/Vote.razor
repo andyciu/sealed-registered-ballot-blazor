@@ -1,0 +1,47 @@
+﻿@page "/vote"
+@inject ICryptographyService CryptographyService
+
+<PageTitle>Vote</PageTitle>
+<h3>投票行使</h3>
+<br />
+<div class="input-group">
+    <span class="input-group-text">Ballot Public Key</span>
+    <input type="text" @bind="ballotPublicKeyStr" />
+</div>
+<br />
+<button class="btn btn-primary" @onclick="ButtonClick">Click me</button>
+<br />
+<div class="input-group">
+    <span class="input-group-text">Vote Str</span>
+    <input type="text" readonly value="@textvotestr" />
+    <CopyToClipboard TextToCopy="@textvotestr" />
+</div>
+<br />
+<div class="input-group">
+    <span class="input-group-text">Voter Key</span>
+    <input type="text" readonly value="@textvoteprivatestr" />
+    <CopyToClipboard TextToCopy="@textvoteprivatestr" />
+</div>
+<br />
+<div class="input-group">
+    <span class="input-group-text">Vote Encrypt Str</span>
+    <input type="text" readonly value="@textencryptstr" />
+    <CopyToClipboard TextToCopy="@textencryptstr" />
+</div>
+
+@code {
+    string textvotestr = "BBBBBBBBBB";
+    string textvoteprivatestr = "BBBBBBBBBB";
+    string textencryptstr = "BBBBBBBBBB";
+    private string? ballotPublicKeyStr { get; set; }
+
+    private async Task ButtonClick(){
+        string votestr = CryptographyService.CreateVoterString();
+        var voterkey = await CryptographyService.GetAESKey();
+        string encryptstr = await CryptographyService.EncryptVote(votestr, ballotPublicKeyStr, voterkey);
+
+        textvotestr = votestr;
+        textvoteprivatestr = voterkey;
+        textencryptstr = encryptstr;
+    }
+}

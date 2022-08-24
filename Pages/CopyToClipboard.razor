@@ -1,0 +1,31 @@
+﻿@inject IClipboardService ClipboardService
+
+<button @onclick="OnClick" class="@buttonClass"><i class="@buttonIcon"></i></button>
+
+@code {
+	[Parameter]
+	public string TextToCopy { get; set; }
+
+	private const string _copyToClipboardIcon = "fa-solid fa-copy";
+	private const string _copiedToClipboardIcon = "fa-solid fa-check";
+
+	private const string _defaultClass = "btn btn-primary";
+	private const string _successClass = "btn btn-success";
+
+	private string buttonIcon = _copyToClipboardIcon;
+	private string buttonClass = _defaultClass;
+
+	private async Task OnClick()
+	{
+		await ClipboardService.CopyToClipboard(TextToCopy);
+
+		buttonIcon = _copiedToClipboardIcon;
+		buttonClass = _successClass;
+
+		StateHasChanged();
+		await Task.Delay(TimeSpan.FromSeconds(2));
+
+		buttonIcon = _copyToClipboardIcon;
+		buttonClass = _defaultClass;
+	}
+}
