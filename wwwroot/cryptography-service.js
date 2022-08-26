@@ -52,6 +52,35 @@ window.SRBB_encrypt_RSA = async function (key, data) {
     return new Uint8Array(encrypteddata);
 }
 
+window.SRBB_decrypt_RSA = async function (key, bufferdata) {
+    let tmpprivatekeyObj = JSON.parse(atob(key));
+    let privateKey = await crypto.subtle.importKey(
+        "jwk", //can be "jwk" (public or private), "spki" (public only), or "pkcs8" (private only)
+        tmpprivatekeyObj,
+        {   //these are the algorithm options
+            name: "RSA-OAEP",
+            hash: { name: "SHA-256" }, //can be "SHA-1", "SHA-256", "SHA-384", or "SHA-512"
+        },
+        false, //whether the key is extractable (i.e. can be used in exportKey)
+        ["decrypt"] //"encrypt" or "wrapKey" for public key import or
+        //"decrypt" or "unwrapKey" for private key imports
+    )
+
+    let decryptData = await crypto.subtle.decrypt(
+        {
+            name: "RSA-OAEP",
+            //label: Uint8Array([...]) //optional
+        },
+        privateKey, //from generateKey or importKey above
+        bufferdata.buffer //ArrayBuffer of the data
+    )
+
+    var enc = new TextDecoder("utf-8");
+    let datastr = enc.decode(new Uint8Array(decryptData));
+
+    return datastr;
+}
+
 window.SRBB_generateKey_AES = async function () {
     let key = await crypto.subtle.generateKey(
         {
@@ -83,14 +112,16 @@ window.SRBB_encrypt_AES = async function (key, data) {
     let enc = new TextEncoder();
     let bufferdata = enc.encode(data);
 
-    let encrypteddata = await crypto.subtle.encrypt(
+    let tmpiv = crypto.getRandomValues(new Uint8Array(12))
+
+    let encryptedData = await crypto.subtle.encrypt(
         {
             name: "AES-GCM",
 
             //Don't re-use initialization vectors!
             //Always generate a new iv every time your encrypt!
             //Recommended to use 12 bytes length
-            iv: window.crypto.getRandomValues(new Uint8Array(12)),
+            iv: tmpiv,
 
             //Additional authentication data (optional)
             additionalData: enc.encode("PEKOPEKO"),
@@ -102,5 +133,40 @@ window.SRBB_encrypt_AES = async function (key, data) {
         bufferdata //ArrayBuffer of data you want to encrypt
     )
 
-    return new Uint8Array(encrypteddata);
+    let tmpObj = {
+        iv: tmpiv,
+        data: new Uint8Array(encryptedData)
+    }
+    return btoa(JSON.stringify(tmpObj));
+}
+
+window.SRBB_decrypt_AES = async function (key, dataobj) {
+    let tmpkeyObj = JSON.parse(atob(key));
+    let keyData = await crypto.subtle.importKey(
+        "jwk", //can be "jwk" (public or private), "spki" (public only), or "pkcs8" (private only)
+        tmpkeyObj,
+        {   //this is the algorithm options
+            name: "AES-GCM",
+        },
+        false, //whether the key is extractable (i.e. can be used in exportKey)
+        ["encrypt", "decrypt"] //can "encrypt", "decrypt", "wrapKey", or "unwrapKey"
+    )
+
+    let tmpdataObj = JSON.parse(atob(dataobj));
+    let encen = new TextEncoder();
+    let decryptData = await crypto.subtle.decrypt(
+        {
+            name: "AES-GCM",
+            iv: new Uint8Array(Object.values(tmpdataObj.iv)), //The initialization vector you used to encrypt
+            additionalData: encen.encode("PEKOPEKO"), //The addtionalData you used to encrypt (if any)
+            tagLength: 128, //The tagLength you used to encrypt (if any)
+        },
+        keyData, //from generateKey or importKey above
+        new Uint8Array(Object.values(tmpdataObj.data)) //ArrayBuffer of the data
+    )
+
+    let encde = new TextDecoder("utf-8");
+    let datastr = encde.decode(new Uint8Array(decryptData));
+
+    return datastr;
 }

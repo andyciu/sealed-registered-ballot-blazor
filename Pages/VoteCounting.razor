@@ -1,0 +1,77 @@
+﻿@page "/votecounting"
+@inject ICryptographyService CryptographyService
+
+<PageTitle>Vote Counting</PageTitle>
+<h3>開票</h3>
+<br />
+<div class="card bg-primary bg-gradient bg-opacity-25" style="width: 400px">
+    <div class="card-body">
+        <div class="input-group">
+            <span class="input-group-text">Ballot Private Key</span>
+            <input type="text" placeholder="Ballot Private Key" @bind="ballotPrivateKeyStr" />
+        </div>
+    </div>
+</div>
+<br />
+<div class="card bg-secondary bg-gradient bg-opacity-25" style="width: 400px">
+    <div class="card-body">
+        <div class="input-group">
+            <span class="input-group-text">Vote Encrypt String</span>
+            <input type="text" placeholder="Vote Encrypt String" @bind="voteEncryptStr" />
+        </div>
+        <br />
+        <div class="input-group">
+            <span class="input-group-text">Voter Key</span>
+            <input type="text" placeholder="Voter Key" @bind="voterKeyStr" />
+        </div>
+    </div>
+</div>
+<br />
+<button class="btn btn-primary" @onclick="ButtonClick">Counting</button>
+<br />
+<hr>
+<p>請依照下列對應之組合進行開票計數作業：</p>
+<div class="card text-center" style="width: 400px">
+    <div class="card-body">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th scope="col">No.</th>
+                    <th scope="col"></th>
+                    <th scope="col">Option</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (optList is not null)
+                {
+                    foreach (var opt in optList)
+                    {
+                        <tr>
+                            <th scope="row">@opt.Value</th>
+                            <td>=></td>
+                            <td>@opt.Key</td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@code {
+    private string? ballotPrivateKeyStr { get; set; }
+    private string? voterKeyStr { get; set; }
+    private string? voteEncryptStr { get; set; }
+    List<KeyValuePair<string, int>>? optList = null;
+
+    private async Task ButtonClick()
+    {
+        var resultstr = await CryptographyService.DecryptVote(voteEncryptStr, ballotPrivateKeyStr, voterKeyStr);
+        var resultdict = CryptographyService.CreateVoterOptionDict(resultstr);
+
+        voterKeyStr = "";
+        voteEncryptStr = "";
+
+        optList = resultdict.OrderBy(a => a.Value).ToList();
+    }
+}

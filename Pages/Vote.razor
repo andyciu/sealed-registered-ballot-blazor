@@ -2,46 +2,79 @@
 @inject ICryptographyService CryptographyService
 
 <PageTitle>Vote</PageTitle>
-<h3>投票行使</h3>
+<h3>投票</h3>
 <br />
-<div class="input-group">
-    <span class="input-group-text">Ballot Public Key</span>
-    <input type="text" @bind="ballotPublicKeyStr" />
+<div class="card bg-success bg-gradient bg-opacity-25" style="width: 400px">
+    <div class="card-body">
+        <div class="input-group">
+            <span class="input-group-text">Ballot Public Key</span>
+            <input type="text" placeholder="Ballot Public Key" @bind="ballotPublicKeyStr" />
+        </div>
+    </div>
 </div>
 <br />
-<button class="btn btn-primary" @onclick="ButtonClick">Click me</button>
+<button class="btn btn-primary" @onclick="ButtonClick">Vote</button>
+<br />
+<hr>
+<p>請依照下列對應之組合進行投票：</p>
+<div class="card text-center" style="width: 400px">
+    <div class="card-body">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th scope="col">Option</th>
+                    <th scope="col"></th>
+                    <th scope="col">No.</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (optList is not null)
+                {
+                    foreach (var opt in optList)
+                    {
+                        <tr>
+                            <th scope="row">@opt.Key</th>
+                            <td>=></td>
+                            <td>@opt.Value</td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+<br />
 <br />
 <div class="input-group">
-    <span class="input-group-text">Vote Str</span>
-    <input type="text" readonly value="@textvotestr" />
-    <CopyToClipboard TextToCopy="@textvotestr" />
+    <span class="input-group-text">Vote Encrypt String</span>
+    <input type="text" readonly placeholder="Vote Encrypt String" value="@textencryptstr" />
+    <CopyToClipboard TextToCopy="@textencryptstr" />
 </div>
+<p>Vote Encrypt String 需於投票時<font color="#FF0000"><b>一併交付</b></font>。</p>
 <br />
 <div class="input-group">
     <span class="input-group-text">Voter Key</span>
-    <input type="text" readonly value="@textvoteprivatestr" />
+    <input type="text" readonly placeholder="Voter Key" value="@textvoteprivatestr" />
     <CopyToClipboard TextToCopy="@textvoteprivatestr" />
 </div>
-<br />
-<div class="input-group">
-    <span class="input-group-text">Vote Encrypt Str</span>
-    <input type="text" readonly value="@textencryptstr" />
-    <CopyToClipboard TextToCopy="@textencryptstr" />
-</div>
+<p><font color="#FF0000"><b>Voter Key 請保密並妥善保存</b>，並於未來進行開票作業時再交付給開票者。</font></p>
+
 
 @code {
-    string textvotestr = "BBBBBBBBBB";
-    string textvoteprivatestr = "BBBBBBBBBB";
-    string textencryptstr = "BBBBBBBBBB";
-    private string? ballotPublicKeyStr { get; set; }
+    string textvoteprivatestr = "";
+    string textencryptstr = "";
+    string? ballotPublicKeyStr { get; set; }
+    List<KeyValuePair<string, int>>? optList = null;
 
     private async Task ButtonClick(){
-        string votestr = CryptographyService.CreateVoterString();
+        var votedict = CryptographyService.CreateVoterOptionDict(6);
+        string votestr = CryptographyService.ConvertVoterOptionDictToString(votedict);
         var voterkey = await CryptographyService.GetAESKey();
         string encryptstr = await CryptographyService.EncryptVote(votestr, ballotPublicKeyStr, voterkey);
 
-        textvotestr = votestr;
         textvoteprivatestr = voterkey;
         textencryptstr = encryptstr;
+
+        optList = votedict.OrderBy(a => a.Key).ToList();
     }
 }

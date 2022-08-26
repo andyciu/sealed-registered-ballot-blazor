@@ -4,30 +4,31 @@
 <PageTitle>Create Ballot</PageTitle>
 <h3>創建新投票</h3>
 
-<div class="alert alert-primary" role="alert">
-    A simple primary alert—check it out!
-</div>
-
 <br />
-<button class="btn btn-primary" @onclick="ButtonClick">Click me</button>
+<button class="btn btn-primary" @onclick="ButtonClick">Generate Key</button>
 <br />
+<hr>
 <div class="input-group">
     <span class="input-group-text">Ballot Public Key</span>
-    <input type="text" readonly value="@textpublic" />
+    <input type="text" readonly placeholder="Ballot Public Key" value="@textpublic" />
     <CopyToClipboard TextToCopy="@textpublic" />
 </div>
 <br />
 <div class="input-group">
     <span class="input-group-text">Ballot Private Key</span>
-    <input type="text" readonly value="@textprivate" />
+    <input type="text" readonly placeholder="Ballot Private Key" value="@textprivate" />
     <CopyToClipboard TextToCopy="@textprivate" />
 </div>
-
+<br />
+<br />
+<p>請將 Ballot Public Key 對其所有成員公開。</p>
+<p><font color="#FF0000"><b>Ballot Private Key 請保密並妥善保存</b>，並於未來進行開票作業時再交付給開票者。</font></p>
 @code {
-    string textpublic = "AAAAAAAAA";
-    string textprivate = "BBBBBBBBBB";
+    string textpublic = "";
+    string textprivate = "";
 
-    private async Task ButtonClick(){
+    private async Task ButtonClick()
+    {
         var (publickey, privatekey) = await CryptographyService.GetRSAKeyPair();
         textpublic = publickey;
         textprivate = privatekey;
