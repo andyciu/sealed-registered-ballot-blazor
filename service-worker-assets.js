@@ -25,11 +25,11 @@
       "url": "_framework\/icudt_no_CJK.dat.br"
     },
     {
-      "hash": "sha256-X022G3eBfxMkEpX3wb7qtJ0Eb43iE29hudI65jonjyo=",
+      "hash": "sha256-AsuQqlVKP9FzcINNe3gANQcuk19sqeOstLvefw+e9Kw=",
       "url": "_framework\/blazor.boot.json.br"
     },
     {
-      "hash": "sha256-zSl0OhbOrgLDW6N6lWWPWrTMXnJavk9L8cYYExpa6\/k=",
+      "hash": "sha256-nxnegaIy89LF0aW+ciPd\/EmrxMx\/lxLkKXknpy\/NGhs=",
       "url": "_framework\/Microsoft.AspNetCore.Components.dll.br"
     },
     {
@@ -53,7 +53,7 @@
       "url": "_framework\/Microsoft.Extensions.Configuration.Json.dll.br"
     },
     {
-      "hash": "sha256-Xw8olLtmyOVGVao57Xx23YkZcj\/J+6qrNBqkRWzktyw=",
+      "hash": "sha256-ZPIQd3BPTuxeraRjMaDkiWLb2PKFiZa8scuXyAge5Sk=",
       "url": "_framework\/Microsoft.Extensions.DependencyInjection.Abstractions.dll.br"
     },
     {
@@ -85,7 +85,7 @@
       "url": "_framework\/Microsoft.JSInterop.WebAssembly.dll.br"
     },
     {
-      "hash": "sha256-Osq2IB0u4RFDTjg\/V148M+Gs17ERRaKVJmLZGpWoM6I=",
+      "hash": "sha256-JwCv79P\/OuVgSMgUzTihPzYGzL7JvfJ6vYNqYtFw7mI=",
       "url": "_framework\/sealed-registered-ballot-blazor.dll.br"
     },
     {
@@ -93,12 +93,16 @@
       "url": "_framework\/System.Collections.Concurrent.dll.br"
     },
     {
-      "hash": "sha256-wNH2C6fNqA67OXajmZNX0ZzOGvsCubovGnBRLTC9Sac=",
+      "hash": "sha256-OniY2ClFyAIrdWX\/ppy8j+wv7zSRtqhiliSevWQ9Q90=",
       "url": "_framework\/System.Collections.dll.br"
     },
     {
       "hash": "sha256-1QBz0q7Iuub8\/l8H4MFagEK\/30aa\/FCleMlm5VEf0aw=",
       "url": "_framework\/System.ComponentModel.dll.br"
+    },
+    {
+      "hash": "sha256-C1KzA\/rzBqMsSw0l88T\/Y98ErG5neS7\/yg6N8XoSfgU=",
+      "url": "_framework\/System.Linq.dll.br"
     },
     {
       "hash": "sha256-HwKtcE8avzC24Rha5rJdWxpml1N+dNGTU09T1G+HOFk=",
@@ -117,7 +121,7 @@
       "url": "_framework\/System.Net.Primitives.dll.br"
     },
     {
-      "hash": "sha256-y\/OZ1zx7RrB+JQeApJhxp4aCBPC07I2zdprXfUHL+dg=",
+      "hash": "sha256-b3f6Z24Bpa0tv\/1UFHjWKWi2aHhfTQStiXqslwv2Wyg=",
       "url": "_framework\/System.Private.CoreLib.dll.br"
     },
     {
@@ -133,7 +137,7 @@
       "url": "_framework\/System.Runtime.CompilerServices.Unsafe.dll.br"
     },
     {
-      "hash": "sha256-BoOGVRTNg8iZv8eUNmJnq0Fp+MXQ+P2DPT8+GdHIOJg=",
+      "hash": "sha256-OU5kpkJrJEDelK2MYOD64C7cOATj7H03SITdpWnE0jo=",
       "url": "_framework\/System.Runtime.dll.br"
     },
     {
@@ -149,12 +153,16 @@
       "url": "_framework\/dotnet.6.0.8.zddbjc68l4.js"
     },
     {
-      "hash": "sha256-HYBFacFI7GDaFloXaCGFNPQgUzArarsRSIa4taiQqWs=",
+      "hash": "sha256-bLMG8fe9yhUmbvvgsYtxW+cOb3S+F0ur5OW60Mna8KA=",
       "url": "_framework\/dotnet.wasm.br"
     },
     {
       "hash": "sha256-wWcGg2wmxOEBi9iVywwyzX8aJ\/I71\/pWqsiKAlg1RnQ=",
       "url": "sealed-registered-ballot-blazor.styles.css"
+    },
+    {
+      "hash": "sha256-ucbXQmk+aLg+viIJ+ZbYnvbmAOE\/xutyo4aCCzfcbVk=",
+      "url": "cryptography-service.js"
     },
     {
       "hash": "sha256-lDAEEaul32OkTANWkZgjgs4sFCsMdLsR5NJxrjVcXdo=",
@@ -167,6 +175,42 @@
     {
       "hash": "sha256-gBwg2tmA0Ci2u54gMF1jNCVku6vznarkLS6D76htNNQ=",
       "url": "css\/bootstrap\/bootstrap.min.css.map"
+    },
+    {
+      "hash": "sha256-xejo6yLi6vGtAjcMIsY8BHdKsLg7QynVlFMzdQgUuy8=",
+      "url": "css\/font-awesome\/css\/all.min.css"
+    },
+    {
+      "hash": "sha256-LNTPiZW6yMKN01RkQfrm740ZoCzono9nut3iyhtYfqw=",
+      "url": "css\/font-awesome\/webfonts\/fa-brands-400.ttf"
+    },
+    {
+      "hash": "sha256-lnOU0f0Qs4jZm+yd8qPKtUakD2lfXHBkHa8LUa9WBMY=",
+      "url": "css\/font-awesome\/webfonts\/fa-brands-400.woff2"
+    },
+    {
+      "hash": "sha256-4tRPyNw9lELX1Y7rUUU6\/8fqkk4Jf4JxupcbQceAHyY=",
+      "url": "css\/font-awesome\/webfonts\/fa-regular-400.ttf"
+    },
+    {
+      "hash": "sha256-UuxNgzz6UC8Qn8wZe0F3NhZfU9PQtOc6KAHI1QtkGAU=",
+      "url": "css\/font-awesome\/webfonts\/fa-regular-400.woff2"
+    },
+    {
+      "hash": "sha256-WAjKjyfsPC\/8qvN9mO4WJnUpi3qclRhSK57e1FuAd\/U=",
+      "url": "css\/font-awesome\/webfonts\/fa-solid-900.ttf"
+    },
+    {
+      "hash": "sha256-UrvZFpVrTti51x0XhOQAiyB4FOxQYgMyb7NgUvNFGts=",
+      "url": "css\/font-awesome\/webfonts\/fa-solid-900.woff2"
+    },
+    {
+      "hash": "sha256-WMy98oM4TSJxHAmQpb554pCekIsRPUqAfggZBfy7xEM=",
+      "url": "css\/font-awesome\/webfonts\/fa-v4compatibility.ttf"
+    },
+    {
+      "hash": "sha256-uPAIHwc2xoYMrU6Bzn+kxhDpmvUuCa\/7nb0oGoECLaA=",
+      "url": "css\/font-awesome\/webfonts\/fa-v4compatibility.woff2"
     },
     {
       "hash": "sha256-BJ\/G+e+y7bQdrYkS2RBTyNfBHpA9IuGaPmf9htub5MQ=",
@@ -217,7 +261,7 @@
       "url": "icon-512.png"
     },
     {
-      "hash": "sha256-uqX8tyAI2iOkE6Aedl\/3FiouGjSx01yYZRRYyPuWFE4=",
+      "hash": "sha256-+JqlhcU5Gax+CvRTkVRzWJHfw0x52VI2Mtgiwrr1LYo=",
       "url": "index.html"
     },
     {
@@ -237,5 +281,5 @@
       "url": "brotliloader.min.js"
     }
   ],
-  "version": "E\/BQImok"
+  "version": "ZLODinnI"
 };
