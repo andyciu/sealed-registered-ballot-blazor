@@ -25,7 +25,7 @@
       "url": "_framework\/icudt_no_CJK.dat.br"
     },
     {
-      "hash": "sha256-AsuQqlVKP9FzcINNe3gANQcuk19sqeOstLvefw+e9Kw=",
+      "hash": "sha256-lmJ8VlY6GX54VYvvehLQboCzLnD0cbmXy4FK4iGPYwo=",
       "url": "_framework\/blazor.boot.json.br"
     },
     {
@@ -85,7 +85,7 @@
       "url": "_framework\/Microsoft.JSInterop.WebAssembly.dll.br"
     },
     {
-      "hash": "sha256-JwCv79P\/OuVgSMgUzTihPzYGzL7JvfJ6vYNqYtFw7mI=",
+      "hash": "sha256-ommrfVX+DQN4Gf9o4TY\/QqS5vQdvSh\/YO2LJ8T3rpg0=",
       "url": "_framework\/sealed-registered-ballot-blazor.dll.br"
     },
     {
@@ -169,15 +169,23 @@
       "url": "css\/app.css"
     },
     {
-      "hash": "sha256-SiIVMGgRhdXjKSTIddX7mh9IbOXVcwQWc7\/p4nS6D\/0=",
-      "url": "css\/bootstrap\/bootstrap.min.css"
+      "hash": "sha256-7ZWbZUAi97rkirk4DcEp4GWDPkWpRMcNaEyXGsNXjLg=",
+      "url": "css\/bootstrap\/css\/bootstrap.min.css"
     },
     {
-      "hash": "sha256-gBwg2tmA0Ci2u54gMF1jNCVku6vznarkLS6D76htNNQ=",
-      "url": "css\/bootstrap\/bootstrap.min.css.map"
+      "hash": "sha256-FANkm279ZcWNQCBfzwt7AtE\/JvTrj8wWb6UE+YgEpvo=",
+      "url": "css\/bootstrap\/css\/bootstrap.min.css.map"
     },
     {
-      "hash": "sha256-xejo6yLi6vGtAjcMIsY8BHdKsLg7QynVlFMzdQgUuy8=",
+      "hash": "sha256-wMCQIK229gKxbUg3QWa544ypI4OoFlC2qQl8Q8xD8x8=",
+      "url": "css\/bootstrap\/js\/bootstrap.bundle.min.js"
+    },
+    {
+      "hash": "sha256-xcEG9bHdL\/S0+2D7iU+0fTHpJSC3QR\/a4wHWos2dnO0=",
+      "url": "css\/bootstrap\/js\/bootstrap.bundle.min.js.map"
+    },
+    {
+      "hash": "sha256-TuauF1x\/8ZOlcUqhIwkaKoae\/TE\/e8NTW4HRL8RJDL0=",
       "url": "css\/font-awesome\/css\/all.min.css"
     },
     {
@@ -261,7 +269,7 @@
       "url": "icon-512.png"
     },
     {
-      "hash": "sha256-+JqlhcU5Gax+CvRTkVRzWJHfw0x52VI2Mtgiwrr1LYo=",
+      "hash": "sha256-Ze9Ugyx+lShW1BoAvkOoQKVLL35cOFzxfxlE9MJqY6Y=",
       "url": "index.html"
     },
     {
@@ -281,5 +289,5 @@
       "url": "brotliloader.min.js"
     }
   ],
-  "version": "ZLODinnI"
+  "version": "PZNuj3Pw"
 };
