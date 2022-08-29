@@ -2,8 +2,52 @@
 
 <PageTitle>Index</PageTitle>
 
-<h1>Hello, world!</h1>
-
-Welcome to your new app.
-
-<SurveyPrompt Title="How is Blazor working for you?" />
+<h1>密封式記名投票</h1>
+<br />
+<p>本App是以Blazor WebAssembly實作之投票輔助工具，工具獨立且不紀載其實際投票內容。</p>
+<p>為實現「密封過程」與「記名」之特性，本工具使用各種加密演算法之交互來實現此一目標。（目前為RSA-OAEP + AES-GCM）</p>
+<br />
+<p>
+    本投票整體流程會採3階段進行：<b>創建 > 投票 > 開票</b>
+    <br />
+    而各階段都具有相對應之角色：<b>創建者 / 投票者 / 開票者</b>
+</p>
+<br />
+<div class="accordion" id="accordionIndex">
+    <div class="accordion-item">
+        <h2 class="accordion-header" id="panelsStayOpen-headingOne">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="false" aria-controls="panelsStayOpen-collapseOne">
+                創建階段
+            </button>
+        </h2>
+        <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse" aria-labelledby="panelsStayOpen-headingOne" data-bs-parent="#accordionIndex">
+            <div class="accordion-body">
+                <u>創建者</u>透過Generate Key發起一個新投票，其金鑰會產生<b>投票公開金鑰</b>與<b>投票私密金鑰</b>2種，<b>投票公開金鑰</b>需對其所有成員公開，而<b>投票私密金鑰</b>需由<u>創建者</u>保密並妥善保存，並於未來進行開票作業時再交付給開票者做為開票使用。
+            </div>
+        </div>
+    </div>
+    <div class="accordion-item">
+        <h2 class="accordion-header" id="panelsStayOpen-headingTwo">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseTwo" aria-expanded="false" aria-controls="panelsStayOpen-collapseTwo">
+                投票階段
+            </button>
+        </h2>
+        <div id="panelsStayOpen-collapseTwo" class="accordion-collapse collapse" aria-labelledby="panelsStayOpen-headingTwo" data-bs-parent="#accordionIndex">
+            <div class="accordion-body">
+                <u>投票者</u>取得<u>創建者</u>所提供之<b>投票公開金鑰</b>，輸入後點選「Vote」，其下方會出現3個元素：<b>投票組合</b>、<b>投票加密字串</b>與<b>投票者金鑰</b>。每位投票者須依照<b>投票組合</b>中其選項英文字母對應之數字進行投票，並需將<b>投票加密字串</b>於<font color="#FF0000"><b>投票時一併交付</b></font>；<b>投票者金鑰</b>需由<u>投票者</u>保密並妥善保管，並只在開票之時才提供給開票者做為開票使用。
+            </div>
+        </div>
+    </div>
+    <div class="accordion-item">
+        <h2 class="accordion-header" id="panelsStayOpen-headingThree">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseThree" aria-expanded="false" aria-controls="panelsStayOpen-collapseThree">
+                開票階段
+            </button>
+        </h2>
+        <div id="panelsStayOpen-collapseThree" class="accordion-collapse collapse" aria-labelledby="panelsStayOpen-headingThree" data-bs-parent="#accordionIndex">
+            <div class="accordion-body">
+                <u>開票者</u>於點票時一共需取得以下3個元素：<u>創建者</u>之<b>投票私密金鑰</b>、<u>投票者</u>之<b>投票加密字串</b>與<b>投票者金鑰</b>，於輸入後點選「Counting」，下方會出現該<u>投票者</u>之<b>投票組合</b>，請對數字清單上相對應之英文字母進行開票之計數。
+            </div>
+        </div>
+    </div>
+</div>
