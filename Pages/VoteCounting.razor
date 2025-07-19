@@ -4,10 +4,31 @@
 <PageTitle>Vote Counting</PageTitle>
 <h3>開票</h3>
 <br />
+@if (@isAlert)
+{
+    @if (string.IsNullOrEmpty(ballotPrivateKeyStr))
+    {
+        <div class="alert alert-danger" role="alert">
+            請輸入「投票私密金鑰」！
+        </div>
+    }
+    @if (string.IsNullOrEmpty(voteEncryptStr))
+    {
+        <div class="alert alert-danger" role="alert">
+            請輸入「投票加密字串」！
+        </div>
+    }
+    @if (string.IsNullOrEmpty(voterKeyStr))
+    {
+        <div class="alert alert-danger" role="alert">
+            請輸入「投票者金鑰」！
+        </div>
+    }
+}
 <div class="card bg-primary bg-gradient bg-opacity-25" style="width: 400px">
     <div class="card-body">
         <div class="input-group">
-            <span class="input-group-text">Ballot Private Key</span>
+            <span class="input-group-text">投票私密金鑰</span>
             <input type="text" placeholder="Ballot Private Key" @bind="ballotPrivateKeyStr" />
         </div>
     </div>
@@ -16,12 +37,12 @@
 <div class="card bg-secondary bg-gradient bg-opacity-25" style="width: 400px">
     <div class="card-body">
         <div class="input-group">
-            <span class="input-group-text">Vote Encrypt String</span>
+            <span class="input-group-text">投票加密字串</span>
             <input type="text" placeholder="Vote Encrypt String" @bind="voteEncryptStr" />
         </div>
         <br />
         <div class="input-group">
-            <span class="input-group-text">Voter Key</span>
+            <span class="input-group-text">投票者金鑰</span>
             <input type="text" placeholder="Voter Key" @bind="voterKeyStr" />
         </div>
     </div>
@@ -30,48 +51,60 @@
 <button class="btn btn-primary" @onclick="ButtonClick">Counting</button>
 <br />
 <hr>
-<p>請依照下列對應之組合進行開票計數作業：</p>
-<div class="card text-center" style="width: 400px">
-    <div class="card-body">
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th scope="col">No.</th>
-                    <th scope="col"></th>
-                    <th scope="col">Option</th>
-                </tr>
-            </thead>
-            <tbody>
-                @if (optList is not null)
-                {
-                    foreach (var opt in optList)
+@if (showBlock)
+{
+    <p>請依照下列對應之組合進行開票計數作業：</p>
+    <div class="card text-center" style="width: 400px">
+        <div class="card-body">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col">No.</th>
+                        <th scope="col"></th>
+                        <th scope="col">Option</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (optList is not null)
                     {
-                        <tr>
-                            <th scope="row">@opt.Value</th>
-                            <td>=></td>
-                            <td>@opt.Key</td>
-                        </tr>
+                        foreach (var opt in optList)
+                        {
+                            <tr>
+                                <th scope="row">@opt.Value</th>
+                                <td>=></td>
+                                <td>@opt.Key</td>
+                            </tr>
+                        }
                     }
-                }
-            </tbody>
-        </table>
+                </tbody>
+            </table>
+        </div>
     </div>
-</div>
+}
 
 @code {
-    private string? ballotPrivateKeyStr { get; set; }
-    private string? voterKeyStr { get; set; }
-    private string? voteEncryptStr { get; set; }
-    List<KeyValuePair<string, int>>? optList = null;
+    private string ballotPrivateKeyStr = "";
+    private string voterKeyStr = "";
+    private string voteEncryptStr = "";
+    List<KeyValuePair<string, int>> optList = [];
+    bool isAlert = false;
+    bool showBlock = false;
 
     private async Task ButtonClick()
     {
-        var resultstr = await CryptographyService.DecryptVote(voteEncryptStr, ballotPrivateKeyStr, voterKeyStr);
+        isAlert = false;
+        if (string.IsNullOrEmpty(ballotPrivateKeyStr) || string.IsNullOrEmpty(voterKeyStr) || string.IsNullOrEmpty(voteEncryptStr))
+        {
+            isAlert = true;
+            return;
+        }
+        var resultstr = await CryptographyService.DecryptVote(ZipLib.Unzip(Convert.FromBase64String(voteEncryptStr)), ZipLib.Unzip(Convert.FromBase64String(ballotPrivateKeyStr)), voterKeyStr);
         var resultdict = CryptographyService.CreateVoterOptionDict(resultstr);
 
         voterKeyStr = "";
         voteEncryptStr = "";
 
         optList = resultdict.OrderBy(a => a.Value).ToList();
+        showBlock = true;
     }
 }

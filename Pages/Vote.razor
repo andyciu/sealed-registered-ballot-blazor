@@ -4,10 +4,17 @@
 <PageTitle>Vote</PageTitle>
 <h3>投票</h3>
 <br />
+@if (isAlert)
+{
+    <div class="alert alert-danger" role="alert">
+        請輸入「投票公開金鑰」！
+    </div>
+}
+
 <div class="card bg-success bg-gradient bg-opacity-25" style="width: 400px">
     <div class="card-body">
         <div class="input-group">
-            <span class="input-group-text">Ballot Public Key</span>
+            <span class="input-group-text">投票公開金鑰</span>
             <input type="text" placeholder="Ballot Public Key" @bind="ballotPublicKeyStr" />
         </div>
     </div>
@@ -16,65 +23,103 @@
 <button class="btn btn-primary" @onclick="ButtonClick">Vote</button>
 <br />
 <hr>
-<p>請依照下列對應之組合進行投票：</p>
-<div class="card text-center" style="width: 400px">
-    <div class="card-body">
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th scope="col">Option</th>
-                    <th scope="col"></th>
-                    <th scope="col">No.</th>
-                </tr>
-            </thead>
-            <tbody>
-                @if (optList is not null)
-                {
-                    foreach (var opt in optList)
+@if (keyIsGenerate)
+{
+    <p>生成時間：@generateTime.ToString("yyyy/MM/dd HH:mm:ss")</p>
+    <p>請依照下列對應之組合進行投票：</p>
+    <div class="card text-center" style="width: 400px">
+        <div class="card-body">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col">Option</th>
+                        <th scope="col"></th>
+                        <th scope="col">No.</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (optList is not null)
                     {
-                        <tr>
-                            <th scope="row">@opt.Key</th>
-                            <td>=></td>
-                            <td>@opt.Value</td>
-                        </tr>
+                        foreach (var opt in optList)
+                        {
+                            <tr>
+                                <th scope="row">@opt.Key</th>
+                                <td>=></td>
+                                <td>@opt.Value</td>
+                            </tr>
+                        }
                     }
-                }
-            </tbody>
-        </table>
+                </tbody>
+            </table>
+        </div>
     </div>
-</div>
-<br />
-<br />
-<div class="input-group">
-    <span class="input-group-text">Vote Encrypt String</span>
-    <input type="text" readonly placeholder="Vote Encrypt String" value="@textencryptstr" />
-    <CopyToClipboard TextToCopy="@textencryptstr" />
-</div>
-<p>Vote Encrypt String 需於投票時<font color="#FF0000"><b>一併交付</b></font>。</p>
-<br />
-<div class="input-group">
-    <span class="input-group-text">Voter Key</span>
-    <input type="text" readonly placeholder="Voter Key" value="@textvoteprivatestr" />
-    <CopyToClipboard TextToCopy="@textvoteprivatestr" />
-</div>
-<p><font color="#FF0000"><b>Voter Key 請保密並妥善保存</b>，並於未來進行開票作業時再交付給開票者。</font></p>
-
+    <br />
+    <br />
+    <div class="input-group">
+        <span class="input-group-text">投票加密字串</span>
+        <input type="text" readonly placeholder="Vote Encrypt String" value="@textencryptstr" />
+        <CopyToClipboard TextToCopy="@textencryptstr" />
+    </div>
+    <p>「投票加密字串」需於投票時<font color="#FF0000"><b>一併交付</b></font>。</p>
+    <br />
+    <div class="input-group">
+        <span class="input-group-text">投票者金鑰</span>
+        <input type="text" readonly placeholder="Voter Key" value="@textvoteprivatestr" />
+        <CopyToClipboard TextToCopy="@textvoteprivatestr" />
+    </div>
+    <p><font color="#FF0000"><b>「投票者金鑰」請保密並妥善保存</b>，並於未來進行開票作業時再交付給開票者。</font></p>
+    <br />
+    <ul class="nav nav-tabs" id="myTab" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="encryptstr-tab" data-bs-toggle="tab" data-bs-target="#encryptstr" type="button" role="tab" aria-controls="encryptstr" aria-selected="true">投票加密字串</button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="voteprivate-tab" data-bs-toggle="tab" data-bs-target="#voteprivate" type="button" role="tab" aria-controls="voteprivate" aria-selected="false">投票者金鑰</button>
+        </li>
+    </ul>
+    <div class="tab-content" id="myTabContent">
+        <div class="tab-pane fade show active" id="encryptstr" role="tabpanel" aria-labelledby="encryptstr-tab">
+            <br />
+            <QRCode Data="@textencryptstr" Size="350px" ErrorCorrection="ErrorCorrection.Low" />
+            <br />
+            <p>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;@generateTime.ToString("yyyy/MM/dd HH:mm:ss")</p>
+        </div>
+        <div class="tab-pane fade" id="voteprivate" role="tabpanel" aria-labelledby="voteprivate-tab">
+            <br />
+            <QRCode Data="@textvoteprivatestr" Size="150px" ErrorCorrection="ErrorCorrection.Medium" />
+            <br />
+            <p>@generateTime.ToString("yyyy/MM/dd HH:mm:ss")</p>
+        </div>
+    </div>
+}
 
 @code {
     string textvoteprivatestr = "";
     string textencryptstr = "";
-    string? ballotPublicKeyStr { get; set; }
-    List<KeyValuePair<string, int>>? optList = null;
+    string ballotPublicKeyStr = "";
+    List<KeyValuePair<string, int>> optList = [];
+    bool isAlert = false;
+    bool keyIsGenerate = false;
+    DateTime generateTime;
 
-    private async Task ButtonClick(){
+    private async Task ButtonClick()
+    {
+        isAlert = false;
+        if (string.IsNullOrEmpty(ballotPublicKeyStr))
+        {
+            isAlert = true;
+            return;
+        }
         var votedict = CryptographyService.CreateVoterOptionDict(6);
         string votestr = CryptographyService.ConvertVoterOptionDictToString(votedict);
         var voterkey = await CryptographyService.GetAESKey();
         string encryptstr = await CryptographyService.EncryptVote(votestr, ballotPublicKeyStr, voterkey);
 
         textvoteprivatestr = voterkey;
-        textencryptstr = encryptstr;
+        textencryptstr = Convert.ToBase64String(ZipLib.Zip(encryptstr));
 
         optList = votedict.OrderBy(a => a.Key).ToList();
+        generateTime = DateTime.Now;
+        keyIsGenerate = true;
     }
 }

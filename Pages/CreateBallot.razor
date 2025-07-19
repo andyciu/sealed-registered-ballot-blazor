@@ -8,29 +8,64 @@
 <button class="btn btn-primary" @onclick="ButtonClick">Generate Key</button>
 <br />
 <hr>
-<div class="input-group">
-    <span class="input-group-text">Ballot Public Key</span>
-    <input type="text" readonly placeholder="Ballot Public Key" value="@textpublic" />
-    <CopyToClipboard TextToCopy="@textpublic" />
-</div>
-<br />
-<div class="input-group">
-    <span class="input-group-text">Ballot Private Key</span>
-    <input type="text" readonly placeholder="Ballot Private Key" value="@textprivate" />
-    <CopyToClipboard TextToCopy="@textprivate" />
-</div>
-<br />
-<br />
-<p>請將 Ballot Public Key 對其所有成員公開。</p>
-<p><font color="#FF0000"><b>Ballot Private Key 請保密並妥善保存</b>，並於未來進行開票作業時再交付給開票者。</font></p>
+@if (keyIsGenerate)
+{
+    <p>生成時間：@generateTime.ToString("yyyy/MM/dd HH:mm:ss")</p>
+    <div class="input-group">
+        <span class="input-group-text">投票公開金鑰</span>
+        <input type="text" readonly placeholder="Ballot Public Key" value="@textpublic" />
+        <CopyToClipboard TextToCopy="@textpublic" />
+    </div>
+    <br />
+    <div class="input-group">
+        <span class="input-group-text">投票私密金鑰</span>
+        <input type="text" readonly placeholder="Ballot Private Key" value="@textprivate" />
+        <CopyToClipboard TextToCopy="@textprivate" />
+    </div>
+    <br />
+    <br />
+    <p>請將「投票公開金鑰」對其所有成員公開。</p>
+    <p><font color="#FF0000"><b>「投票私密金鑰」請保密並妥善保存</b>，並於未來進行開票作業時再交付給開票者。</font></p>
+}
+
+@if (keyIsGenerate)
+{
+    <ul class="nav nav-tabs" id="myTab" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="publickey-tab" data-bs-toggle="tab" data-bs-target="#publickey" type="button" role="tab" aria-controls="publickey" aria-selected="true">投票公開金鑰</button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="privatekey-tab" data-bs-toggle="tab" data-bs-target="#privatekey" type="button" role="tab" aria-controls="privatekey" aria-selected="false">投票私密金鑰</button>
+        </li>
+    </ul>
+    <div class="tab-content" id="myTabContent">
+        <div class="tab-pane fade show active" id="publickey" role="tabpanel" aria-labelledby="publickey-tab">
+            <br />
+            <QRCode Data="@textpublic" Size="250px" ErrorCorrection="ErrorCorrection.Medium" />
+            <br />
+            <p>&emsp;&emsp;&emsp;@generateTime.ToString("yyyy/MM/dd HH:mm:ss")</p>
+        </div>
+        <div class="tab-pane fade" id="privatekey" role="tabpanel" aria-labelledby="privatekey-tab">
+            <br />
+            <QRCode Data="@textprivate" Size="350px" ErrorCorrection="ErrorCorrection.Low" />
+            <br />
+            <p>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;@generateTime.ToString("yyyy/MM/dd HH:mm:ss")</p>
+        </div>
+    </div>
+}
+
 @code {
     string textpublic = "";
     string textprivate = "";
+    bool keyIsGenerate = false;
+    DateTime generateTime;
 
     private async Task ButtonClick()
     {
         var (publickey, privatekey) = await CryptographyService.GetRSAKeyPair();
         textpublic = publickey;
-        textprivate = privatekey;
+        textprivate = Convert.ToBase64String(ZipLib.Zip(privatekey));
+        keyIsGenerate = true;
+        generateTime = DateTime.Now;
     }
 }
