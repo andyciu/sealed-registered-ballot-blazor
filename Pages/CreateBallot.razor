@@ -30,7 +30,8 @@
 
 @if (keyIsGenerate)
 {
-    <ul class="nav nav-tabs" id="myTab" role="tablist">
+    <hr>
+    <ul class="nav nav-pills" id="myTab" role="tablist">
         <li class="nav-item" role="presentation">
             <button class="nav-link active" id="publickey-tab" data-bs-toggle="tab" data-bs-target="#publickey" type="button" role="tab" aria-controls="publickey" aria-selected="true">投票公開金鑰</button>
         </li>
@@ -41,15 +42,25 @@
     <div class="tab-content" id="myTabContent">
         <div class="tab-pane fade show active" id="publickey" role="tabpanel" aria-labelledby="publickey-tab">
             <br />
-            <QRCode Data="@textpublic" Size="250px" ErrorCorrection="ErrorCorrection.Medium" />
+            <div class="card text-center" style="width: 270px;">
+                <QRCode Data="@textpublic" ErrorCorrection="ErrorCorrection.Medium" />
+                <div class="card-body">
+                    <h5 class="card-title">投票公開金鑰</h5>
+                    <p class="card-text">@generateTime.ToString("yyyy/MM/dd HH:mm:ss")</p>
+                </div>
+            </div>
             <br />
-            <p>&emsp;&emsp;&emsp;@generateTime.ToString("yyyy/MM/dd HH:mm:ss")</p>
         </div>
         <div class="tab-pane fade" id="privatekey" role="tabpanel" aria-labelledby="privatekey-tab">
             <br />
-            <QRCode Data="@textprivate" Size="350px" ErrorCorrection="ErrorCorrection.Low" />
+            <div class="card text-center" style="width: 375px;">
+                <QRCode Data="@textprivate" ErrorCorrection="ErrorCorrection.Low" />
+                <div class="card-body">
+                    <h5 class="card-title">投票私密金鑰</h5>
+                    <p class="card-text">@generateTime.ToString("yyyy/MM/dd HH:mm:ss")</p>
+                </div>
+            </div>
             <br />
-            <p>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;@generateTime.ToString("yyyy/MM/dd HH:mm:ss")</p>
         </div>
     </div>
 }

@@ -30,7 +30,12 @@
         <div class="input-group">
             <span class="input-group-text">投票私密金鑰</span>
             <input type="text" placeholder="Ballot Private Key" @bind="ballotPrivateKeyStr" />
+            <button @onclick="OnBallotPrivateKeyScanClick" class="btn btn-info"><i class="fa-solid fa-camera"></i></button>
         </div>
+        @if (isBallotPrivateKeyScanClick)
+        {
+            <QRCodeScan OnFoundBarcode="@HandleOnFoundBarcode_BallotPrivateKey" ReaderID="reader-ballotPrivateKey" />
+        }
     </div>
 </div>
 <br />
@@ -39,12 +44,22 @@
         <div class="input-group">
             <span class="input-group-text">投票加密字串</span>
             <input type="text" placeholder="Vote Encrypt String" @bind="voteEncryptStr" />
+            <button @onclick="OnVoteEncryptScanClick" class="btn btn-info"><i class="fa-solid fa-camera"></i></button>
         </div>
+        @if (isVoteEncryptScanClick)
+        {
+            <QRCodeScan OnFoundBarcode="@HandleOnFoundBarcode_VoteEncrypt" ReaderID="reader-voteEncrypt" />
+        }
         <br />
         <div class="input-group">
             <span class="input-group-text">投票者金鑰</span>
             <input type="text" placeholder="Voter Key" @bind="voterKeyStr" />
+            <button @onclick="OnVoterKeyScanClick" class="btn btn-info"><i class="fa-solid fa-camera"></i></button>
         </div>
+        @if (isVoterKeyScanClick)
+        {
+            <QRCodeScan OnFoundBarcode="@HandleOnFoundBarcode_VoterKey" ReaderID="reader-voterKey" />
+        }
     </div>
 </div>
 <br />
@@ -89,6 +104,9 @@
     List<KeyValuePair<string, int>> optList = [];
     bool isAlert = false;
     bool showBlock = false;
+    bool isBallotPrivateKeyScanClick = false;
+    bool isVoteEncryptScanClick = false;
+    bool isVoterKeyScanClick = false;
 
     private async Task ButtonClick()
     {
@@ -106,5 +124,44 @@
 
         optList = resultdict.OrderBy(a => a.Value).ToList();
         showBlock = true;
+    }
+
+    private void OnBallotPrivateKeyScanClick()
+    {
+        isVoteEncryptScanClick = false;
+        isVoterKeyScanClick = false;
+        isBallotPrivateKeyScanClick = !isBallotPrivateKeyScanClick;
+    }
+
+    private void HandleOnFoundBarcode_BallotPrivateKey(string qrcodeStr)
+    {
+        ballotPrivateKeyStr = qrcodeStr;
+        isBallotPrivateKeyScanClick = false;
+    }
+
+    private void OnVoteEncryptScanClick()
+    {
+        isBallotPrivateKeyScanClick = false;
+        isVoterKeyScanClick = false;
+        isVoteEncryptScanClick = !isVoteEncryptScanClick;
+    }
+
+    private void HandleOnFoundBarcode_VoteEncrypt(string qrcodeStr)
+    {
+        voteEncryptStr = qrcodeStr;
+        isVoteEncryptScanClick = false;
+    }
+
+    private void OnVoterKeyScanClick()
+    {
+        isBallotPrivateKeyScanClick = false;
+        isVoteEncryptScanClick = false;
+        isVoterKeyScanClick = !isVoterKeyScanClick;
+    }
+
+    private void HandleOnFoundBarcode_VoterKey(string qrcodeStr)
+    {
+        voterKeyStr = qrcodeStr;
+        isVoterKeyScanClick = false;
     }
 }

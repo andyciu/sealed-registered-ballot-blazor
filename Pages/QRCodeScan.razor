@@ -1,0 +1,46 @@
+﻿@implements IAsyncDisposable
+
+@inject Html5QrcodeReader cameraBarcodeReader
+
+<div class="mt-2 text-center">
+    <div id="@ReaderID" class="mx-auto mb-2" style="width:300px">
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public EventCallback<string> OnFoundBarcode { get; set; }
+
+    [Parameter]
+    public string ReaderID { get; set; } = "reader";
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            cameraBarcodeReader.OnBarcodeScan += HandleBarcodeScanDebounced;
+            await cameraBarcodeReader.Render(divId: ReaderID);
+            await InvokeAsync(StateHasChanged);
+        }
+    }
+    bool processingScan;
+    public async void HandleBarcodeScanDebounced(string barcode)
+    {
+        if (processingScan)
+            return;
+        processingScan = true;
+        await HandleBarcodeScan(barcode);
+        await Task.Delay(1500);
+        processingScan = false;
+    }
+    public async Task HandleBarcodeScan(string barcode)
+    {
+        await OnFoundBarcode.InvokeAsync(barcode.Trim());
+        await InvokeAsync(StateHasChanged);
+    }
+    public async ValueTask DisposeAsync()
+    {
+        cameraBarcodeReader.OnBarcodeScan -= HandleBarcodeScanDebounced;
+        await cameraBarcodeReader.Stop();
+    }
+}

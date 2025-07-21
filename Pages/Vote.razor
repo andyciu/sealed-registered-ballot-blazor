@@ -16,7 +16,12 @@
         <div class="input-group">
             <span class="input-group-text">投票公開金鑰</span>
             <input type="text" placeholder="Ballot Public Key" @bind="ballotPublicKeyStr" />
+            <button @onclick="OnClick" class="btn btn-info"><i class="fa-solid fa-camera"></i></button>
         </div>
+        @if (isQRCodeScanClick)
+        {
+            <QRCodeScan OnFoundBarcode="@HandleOnFoundBarcode" />
+        }
     </div>
 </div>
 <br />
@@ -68,8 +73,8 @@
         <CopyToClipboard TextToCopy="@textvoteprivatestr" />
     </div>
     <p><font color="#FF0000"><b>「投票者金鑰」請保密並妥善保存</b>，並於未來進行開票作業時再交付給開票者。</font></p>
-    <br />
-    <ul class="nav nav-tabs" id="myTab" role="tablist">
+    <hr>
+    <ul class="nav nav-pills" id="myTab" role="tablist">
         <li class="nav-item" role="presentation">
             <button class="nav-link active" id="encryptstr-tab" data-bs-toggle="tab" data-bs-target="#encryptstr" type="button" role="tab" aria-controls="encryptstr" aria-selected="true">投票加密字串</button>
         </li>
@@ -80,15 +85,25 @@
     <div class="tab-content" id="myTabContent">
         <div class="tab-pane fade show active" id="encryptstr" role="tabpanel" aria-labelledby="encryptstr-tab">
             <br />
-            <QRCode Data="@textencryptstr" Size="350px" ErrorCorrection="ErrorCorrection.Low" />
+            <div class="card text-center" style="width: 375px;">
+                <QRCode Data="@textencryptstr" ErrorCorrection="ErrorCorrection.Low" />
+                <div class="card-body">
+                    <h5 class="card-title">投票加密字串</h5>
+                    <p class="card-text">@generateTime.ToString("yyyy/MM/dd HH:mm:ss")</p>
+                </div>
+            </div>
             <br />
-            <p>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;@generateTime.ToString("yyyy/MM/dd HH:mm:ss")</p>
         </div>
         <div class="tab-pane fade" id="voteprivate" role="tabpanel" aria-labelledby="voteprivate-tab">
             <br />
-            <QRCode Data="@textvoteprivatestr" Size="150px" ErrorCorrection="ErrorCorrection.Medium" />
+            <div class="card text-center" style="width: 150px;">
+                <QRCode Data="@textvoteprivatestr" ErrorCorrection="ErrorCorrection.Medium" />
+                <div class="card-body">
+                    <h5 class="card-title">投票者金鑰</h5>
+                    <p class="card-text">@generateTime.ToString("yyyy/MM/dd HH:mm:ss")</p>
+                </div>
+            </div>
             <br />
-            <p>@generateTime.ToString("yyyy/MM/dd HH:mm:ss")</p>
         </div>
     </div>
 }
@@ -100,6 +115,7 @@
     List<KeyValuePair<string, int>> optList = [];
     bool isAlert = false;
     bool keyIsGenerate = false;
+    bool isQRCodeScanClick = false;
     DateTime generateTime;
 
     private async Task ButtonClick()
@@ -121,5 +137,16 @@
         optList = votedict.OrderBy(a => a.Key).ToList();
         generateTime = DateTime.Now;
         keyIsGenerate = true;
+    }
+
+    private void OnClick()
+    {
+        isQRCodeScanClick = !isQRCodeScanClick;
+    }
+
+    private void HandleOnFoundBarcode(string qrcodeStr)
+    {
+        ballotPublicKeyStr = qrcodeStr;
+        isQRCodeScanClick = false;
     }
 }
