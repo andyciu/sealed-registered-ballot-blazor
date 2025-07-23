@@ -6,7 +6,7 @@ IDE: Visual Studio 2022 Community
 本App是以Blazor WebAssembly實作之投票輔助工具，工具獨立且不紀載其實際投票內容。  
 為實現「密封過程」與「記名」之特性，本工具使用各種加密演算法之交互來實現此一目標。（目前為RSA-OAEP + AES-GCM）
   
-[情境範例](https://github.com/andyciu/sealed-registered-ballot-blazor/wiki/%E6%83%85%E5%A2%83%E7%AF%84%E4%BE%8B)
+[情境範例](Wiki_demo.md)
   
 > 本投票整體流程會採3階段進行：**創建 > 投票 > 開票**   
 > 而各階段都具有相對應之角色：**創建者 / 投票者 / 開票者**
